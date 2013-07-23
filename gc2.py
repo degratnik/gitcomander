@@ -4,7 +4,7 @@ __projectname__ = 'git comander'
 
 __description__ = '''Console tool for git that helps with merge and rebase and with other commit and branches manipulations.'''
 
-
+import optparse
 import os
 import sys
 import time
@@ -19,8 +19,19 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 code = locale.getpreferredencoding()
 
+path = None
+res = None
 
 def render(win):
+    parser = optparse.OptionParser()
+    parser.add_option('-p', dest='path', default=None, help='Repo path.')
+    (options, args) = parser.parse_args(sys.argv[1:])
+    path = options.path
+    if path == None:
+       path = os.getcwd()
+    print path 
+    time.sleep(3)
+
     global stdscr
     stdscr = win
     curses.noecho()
@@ -33,8 +44,8 @@ def render(win):
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLUE)
     stdscr.bkgd(' ', curses.color_pair(2))
     #res = subprocess.Popen('git log --pretty=format:"{\\\"ahesh\\\":\\\"%h\\\", \\\"hesh\\\":\\\"%H\\\", \\\"author\\\":\\\"%an\\\", \\\"commit_date\\\":\\\"%cd\\\", \\\"subject\\\":\\\"%s\\\"}"', stdout=subprocess.PIPE, shell=True, cwd="/home/rembo/repo/core/").communicate()[0].split('\n')
-    res = subprocess.Popen('git log --pretty=format:"%h[@#$]%H[@#$]%s[@#$]%an[@#$]%cd" --date=short', stdout=subprocess.PIPE, shell=True, cwd="/home/rembo/repo/core/").communicate()[0].split('\n')
-    
+    res = subprocess.Popen('git log --pretty=format:"%h[@#$]%H[@#$]%s[@#$]%an[@#$]%cd" --date=short', stdout=subprocess.PIPE, shell=True, cwd=path).communicate()[0].split('\n')
+
     top = 0
     while True:
         curses.napms(100)
@@ -85,7 +96,11 @@ def render(win):
 
 
 def main():
-    curses.wrapper(render)
+    try:
+        curses.wrapper(render)
+    except Exception, e:
+        print e
+        print res
 
 
 
