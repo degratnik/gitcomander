@@ -56,18 +56,24 @@ def render(win):
         stdscr.addstr(0, 2, "rows = %s colls = %s" % (rows, colls), curses.A_BOLD)
         #tab1
         for i in range((rows - 5)//2):
-            item = res[i + top].split('[@#$]')
-            #stdscr.addstr(i+1, 2, res[i + top][:colls-20])
-            str = "%s %s %s" % (item[0], item[4], item[3])
-            stdscr.addstr(2*i+2, 2, str[:tabsize])
-            stdscr.addstr(2*i+2+1, 2, ("        %s" % item[2])[:tabsize], curses.color_pair(1))
+	    try:
+                item = res[i + top].split('[@#$]')
+                #stdscr.addstr(i+1, 2, res[i + top][:colls-20])
+                str = "%s %s %s" % (item[0], item[4], item[3])
+                stdscr.addstr(2*i+2, 2, str[:tabsize])
+                stdscr.addstr(2*i+2+1, 2, ("        %s" % item[2])[:tabsize], curses.color_pair(1))
+            except:
+                pass
         #tab2
         for i in range((rows - 5)//2):
-            item = res[i + 2*top].split('[@#$]')
-            #stdscr.addstr(i+1, 2, res[i + top][:colls-20])
-            str = "%s %s %s" % (item[0], item[4], item[3])
-            stdscr.addstr(2*i+2, tabsize+5, str[:tabsize], curses.A_REVERSE)
-            stdscr.addstr(2*i+2+1, tabsize+5, ("        %s" % item[2])[:tabsize])
+            try:
+                item = res[i + 2*top].split('[@#$]')
+                #stdscr.addstr(i+1, 2, res[i + top][:colls-20])
+                str = "%s %s %s" % (item[0], item[4], item[3])
+                stdscr.addstr(2*i+2, tabsize+5, str[:tabsize], curses.A_REVERSE)
+                stdscr.addstr(2*i+2+1, tabsize+5, ("        %s" % item[2])[:tabsize])
+            except:
+                pass
         stdscr.refresh()
         ch = stdscr.getch()
 
@@ -96,11 +102,11 @@ def render(win):
 
 
 def main():
-    try:
+    #try:
         curses.wrapper(render)
-    except Exception, e:
-        print e
-        print res
+    #except Exception, e:
+        #print e
+        #print res
 
 
 
